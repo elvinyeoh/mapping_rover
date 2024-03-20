@@ -1,0 +1,9 @@
+<library path="mapping_rover">
+  <class name="mapping_rover/DiffDriveRoverHardware"
+         type="mapping_rover::DiffDriveRoverHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ros2_control for mapping rover differntial drive using a system hardware interface-type. It uses velocity command and position state interface.
+    </description>
+  </class>
+</library>

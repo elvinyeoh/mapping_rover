@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <joint name="zed2i_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="zed2i_frame"/>
+        <origin rpy="0 0 0" xyz="0.295 0.0 0.085"/>
+    </joint>
+
+    <link name="zed2i_frame">
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1e-7" ixy="0" ixz="0" iyy="1e-7" iyz="0" izz="1e-7"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.0377"/>
+      <geometry>
+        <mesh filename="package://mapping_rover/meshes/VLP16_scan.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  
+</robot>

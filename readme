@@ -1,0 +1,58 @@
+For mapping_rover
+
+# TO VISUALIZE URDF ROVER + ROBOT STATE PUBLISHER 
+
+STEP 1: ros2 launch mapping_rover rsp.launch.py 
+STEP 2: cd mapping_rover
+STEP 3: rviz2 -d src/config/rviz/view_rover.rviz
+
+# TO VISUALIZE URDF ROVER + ROBOT STATE PUBLISHER + LIDAR OUTPUT
+
+STEP 1: ros2 launch mapping_rover rsp.launch.py 
+STEP 2: 
+sudo chmod 777 /dev/ttyUSB0
+ros2 launch mapping_rover rplidar_s2.launch.py
+STEP 3: cd mapping_rover
+STEP 4: rviz2 -d src/mapping_rover/config/rviz/view_rover.rviz
+
+
+# TO LAUNCH MAPPING FUNCTION
+
+STEP 1: ros2 launch mapping_rover rover.launch.py		- Launch bringup (ros2_control, nodes etc.)
+STEP 2: ros2 launch mapping_rover rplidar_s2.launch.py		- Launch rplidar
+STEP 3:	ros2 launch mapping_rover mapping.launch.py		- Launch slam toolbox (mapper_params_online_async) & Visualize the mapping in RVIZ
+
+Sometimes the laser_scan data will face TF issue, give it a some time to load. If does not work, change the fix_frame to "odom" and laser_scan data will show. Then, change back to fixed frame "map". If any issue, please contact 019-3565401 (Jia-Hao)
+
+# TO SAVE MAP
+
+STEP 1: in rviz, scroll down to SlamToolboxPlugin
+STEP 2: Save Map -> insert desired name
+STEP 3: click "Save Map"					- Map can be found in home folder (.pgm & .yaml)
+
+Remember to save both "Save Map" and "Serialize Map" - Serialize Map is used by navigation stack 
+
+
+# TO LAUNCH NAVIGATION STACK
+
+STEP 1: ros2 launch mapping_rover rover.launch.py		- Launch bringup (ros2_control, nodes etc.)
+STEP 2: ros2 launch mapping_rover rplidar_s2.launch.py		- Launch rplidar
+STEP 3: ros2 launch mapping_rover localization.launch.py                  - start navigation localization (mapper_params_online_async_localization)
+STEP 4: cd mapping_rover    - make sure you are in the mapping_rover workspace
+STEP 5: ros2 launch nav2_bringup navigation_launch.py use_sim_time:=false params_file:=./src/mapping_rover/config/navigation/nav2_params.yaml     - Launch navigation stack with our nav2_params file
+
+
+Impotant
+STEP 4: is supposed to use ros2 launch mapping_rover navigation.launch.py however it is still in progress
+
+Impotant information - 
+Please make sure that the robot pose is correct prior to starting the navigation stack 
+
+Configuration details-
+In order to change the map, please proceed to mapper_params_online_async_localization.yaml under "src > config > navigation". 
+Change line 22 - map_file_name: "path to serial file" 
+
+Reminder, maps are saved under "src > maps" 
+
+For configuration of navigation2 parameters, please proceed to nav2_params.yaml under "src > config > navigation"
+Here, you may change parameters such as layers etc. 
